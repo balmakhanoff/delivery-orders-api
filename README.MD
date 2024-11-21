@@ -1,6 +1,6 @@
 # API Заказа Доставки
 
-## Реализация на Flask и Flask-SQLAlchemy
+## Реализация на Flask и Flask-SQLAlchemy, SQLite
 
 ## Среда разработки
 
