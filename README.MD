@@ -67,7 +67,7 @@
     curl -X GET http://127.0.0.1:5000/api/orders/1
 ```
 
-#### Изменить статус доставки по ID
+#### Изменить статус доставки по ID (CREATED, IN_DELIVERY, DELIVERED)
 
 ```
     curl -X PUT http://127.0.0.1:5000/api/orders/1/status -H "Content-Type: application/json" -d "{\"status\": \"IN_DELIVERY\"}"
