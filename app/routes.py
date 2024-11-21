@@ -4,6 +4,12 @@ from . import db
 
 api_bp = Blueprint('api', __name__)
 
+
+@api_bp.route('/', methods=['GET'])
+def welcome():
+    return jsonify({'message': 'Welcome to the Delivery Orders API!'}), 200
+
+
 # Создание заявки на доставку
 
 
