@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from .models import Order, Comment
+from .models import Order, Comment, OrderStatus
 from . import db
 
 api_bp = Blueprint('api', __name__)
@@ -47,6 +47,33 @@ def deactivate_order(order_id):
     db.session.commit()
 
     return jsonify({'message': f'Order {order_id} status updated to inactive'}), 200
+
+# Обновление статуса заказа
+
+
+@api_bp.route('/api/orders/<int:order_id>/status', methods=['PUT'])
+def update_order_status(order_id):
+    order = Order.query.get(order_id)
+    if not order:
+        return jsonify({'error': 'Order not found'}), 404
+
+    # Получаем новый статус из запроса
+    data = request.json
+    if not data or 'status' not in data:
+        return jsonify({'error': 'Status is required'}), 400
+
+    # Проверяем, является ли статус допустимым
+    try:
+        # Преобразуем в верхний регистр, чтобы совпало с перечислением
+        new_status = OrderStatus[data['status'].upper()]
+    except KeyError:
+        return jsonify({'error': 'Invalid status'}), 400
+
+    # Обновляем статус заказа
+    order.status = new_status
+    db.session.commit()
+
+    return jsonify({'message': f'Order {order_id} status updated to {new_status.value}'}), 200
 
 # Добавление комментария к заказу
 

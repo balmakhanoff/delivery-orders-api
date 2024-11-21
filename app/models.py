@@ -1,7 +1,14 @@
 from datetime import datetime
 from . import db
+from enum import Enum
 
 # Модель для заказа
+
+
+class OrderStatus(Enum):
+    CREATED = "created"
+    IN_DELIVERY = "in delivery"
+    DELIVERED = "delivered"
 
 
 class Order(db.Model):
@@ -9,7 +16,7 @@ class Order(db.Model):
     delivery_address = db.Column(db.String(200), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     is_active = db.Column(db.Boolean, default=True)
-
+    status = db.Column(db.Enum(OrderStatus), default=OrderStatus.CREATED)
     # Связь с комментариями
     comments = db.relationship('Comment', backref='order', lazy=True)
 
@@ -18,7 +25,8 @@ class Order(db.Model):
             'id': self.id,
             'delivery_address': self.delivery_address,
             'created_at': self.created_at,
-            'is_active': self.is_active
+            'is_active': self.is_active,
+            'status': self.status.name
         }
 
 # Модель для комментариев
